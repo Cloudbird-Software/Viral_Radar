@@ -16,3 +16,5 @@
   执法、垂类关键词/点赞/转发/爆款频次四维筛选、确定序可复核；spec AC-2 / BEH-2）。
 - W1-C1：账号录入与平台判定——src/viral_radar/adapters/registry.py（链接域名边界/
   ID 双口径平台判定、三通道归位、基础信息拉取、判定结果持久化可查；spec AC-1 / BEH-1）。
+- W1-C3：抖音采集适配器——src/viral_radar/adapters/douyin（注入式 transport、
+  近 6 个月窗口过滤、点赞/转发/热门评论元数据规范化、无直连采集路径；spec AC-4 / BEH-4 / INV-3）。
