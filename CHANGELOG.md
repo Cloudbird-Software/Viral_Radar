@@ -33,3 +33,5 @@
   版本化落仓；spec AC-17 / INV-5 / INV-6 / IFACE-2 / IFACE-3）。
 - W1-C6：OCR 画面识别——src/viral_radar/processing/ocr（RapidOCR 惰性引擎、
   花字/字幕/内嵌三类文本、帧/图片顺序属性；spec AC-6 / BEH-7）。
+- W2-C1：秒级结构化拆解引擎——src/viral_radar/analysis/decompose.py（时间轴切片、
+  time_range/script_text/intent 三字段、intent 枚举值域 fail-closed；spec AC-8 / IFACE-2）。
