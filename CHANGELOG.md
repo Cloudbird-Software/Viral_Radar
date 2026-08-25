@@ -26,3 +26,5 @@
   spec AC-7 / BEH-8）。
 - W4-C1：小红书采集适配器——src/viral_radar/adapters/xhs（短视频流+图文图片集、
   封面/内页图片顺序属性、文末 Hashtag；spec AC-4 小红书面）。
+- W4-C3：视频号采集适配器——src/viral_radar/adapters/video_channel（视频流+点赞/
+  转发/收藏社交元数据；spec AC-4 视频号面）。
