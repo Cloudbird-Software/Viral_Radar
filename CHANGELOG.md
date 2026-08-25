@@ -28,3 +28,6 @@
   封面/内页图片顺序属性、文末 Hashtag；spec AC-4 小红书面）。
 - W4-C3：视频号采集适配器——src/viral_radar/adapters/video_channel（视频流+点赞/
   转发/收藏社交元数据；spec AC-4 视频号面）。
+- W0-C4：LLM 网关统一路由与版本化 Prompt 资产——src/viral_radar/app/llm 与
+  src/viral_radar/analysis/assets（供应商配置化热切换 / 意图标签集可枚举 / 拆解模板
+  版本化落仓；spec AC-17 / INV-5 / INV-6 / IFACE-2 / IFACE-3）。
