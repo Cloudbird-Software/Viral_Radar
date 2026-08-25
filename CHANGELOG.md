@@ -10,3 +10,5 @@
   Makefile Python 目标与四层导入边界执法（specs/IR-0001 波次计划，治理基线不豁免）。
 - W0-C2：统一数据模型 schema v1 与校验器——src/viral_radar/processing/unified（版本化
   schema 资产落盘 + 标准库校验器，合法/非法样本双向断言；spec AC-7 / IFACE-1）。
+- W0-C3：异步任务队列与容错——src/viral_radar/app/queue.py（任务实体 / 状态机 / 重试上限
+  2 次 / 失败留痕跳过 / 批次不阻塞；spec AC-3 / AC-16 / BUDGET-2 / INV-4）。
