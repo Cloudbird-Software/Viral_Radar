@@ -57,7 +57,7 @@ jobs:
       # aiohappyeyeballs / regex / typing-extensions 的 uv.lock 通道许可证表达式
       # 被取为源仓库历史片段聚合（GPL-1.0-or-later 等历史附属许可证），PyPI 元数据
       # 实为 PSF-2.0 / Apache-2.0（AI_Web_School requirements.txt 通道同版本通过）。
-      allow-dependencies-licenses: pkg:pypi/aiohappyeyeballs,pkg:pypi/regex,pkg:pypi/typing-extensions
+      allow-dependencies-licenses: pkg:pypi/aiohappyeyeballs,pkg:pypi/regex,pkg:pypi/typing-extensions,pkg:pypi/pillow,pkg:pypi/protobuf,pkg:pypi/shapely
 
   adr-required:
     # C1 脚手架面（ADR-0021，GOVERNANCE C1 scope）：供应链入口文件变更须引用 ADR。
