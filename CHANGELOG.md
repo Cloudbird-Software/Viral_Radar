@@ -21,3 +21,6 @@
 - W1-C4：采集去重与频控代理——src/viral_radar/adapters/hygiene.py（去重幂等、
   频控/代理池轮换、公开数据白名单+凭据路径拦截、CompliantTransport 唯一出站通道；
   spec AC-15 / BEH-5 / BEH-16 / INV-3）。
+- W1-C7：数据融合对齐——src/viral_radar/processing/unified/fusion.py（标题+ASR+OCR
+  按时间轴/图片顺序融合为统一 JSON，产物过 W0-C2 schema；缺时间戳拒绝（INV-2）；
+  spec AC-7 / BEH-8）。
