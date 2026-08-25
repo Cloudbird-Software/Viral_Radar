@@ -18,3 +18,6 @@
   ID 双口径平台判定、三通道归位、基础信息拉取、判定结果持久化可查；spec AC-1 / BEH-1）。
 - W1-C3：抖音采集适配器——src/viral_radar/adapters/douyin（注入式 transport、
   近 6 个月窗口过滤、点赞/转发/热门评论元数据规范化、无直连采集路径；spec AC-4 / BEH-4 / INV-3）。
+- W1-C4：采集去重与频控代理——src/viral_radar/adapters/hygiene.py（去重幂等、
+  频控/代理池轮换、公开数据白名单+凭据路径拦截、CompliantTransport 唯一出站通道；
+  spec AC-15 / BEH-5 / BEH-16 / INV-3）。
