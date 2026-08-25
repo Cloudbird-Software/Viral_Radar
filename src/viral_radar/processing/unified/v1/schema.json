@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "title": "统一数据模型 v1（spec AC-7 / IFACE-1，IR-0001）",
+  "type": "object",
+  "required": [
+    "task_id",
+    "platform",
+    "content_type",
+    "author",
+    "content_meta",
+    "raw_text",
+    "timeline_data"
+  ],
+  "properties": {
+    "task_id": { "type": "string" },
+    "platform": { "type": "string", "enum": ["Douyin", "XHS", "VideoChannel"] },
+    "content_type": { "type": "string", "enum": ["video", "images"] },
+    "author": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "id": { "type": "string" },
+        "followers": { "type": "number" }
+      }
+    },
+    "content_meta": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "url": { "type": "string" },
+        "published_at": { "type": "string" },
+        "likes": { "type": "number" },
+        "shares": { "type": "number" },
+        "comments": { "type": "number" },
+        "hashtags": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "raw_text": { "type": "string" },
+    "timeline_data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["time_start", "time_end", "source_type", "raw_text"],
+        "properties": {
+          "time_start": { "type": "number" },
+          "time_end": { "type": "number" },
+          "source_type": { "type": "string", "enum": ["ASR", "OCR", "Title"] },
+          "raw_text": { "type": "string" }
+        }
+      }
+    }
+  }
+}
