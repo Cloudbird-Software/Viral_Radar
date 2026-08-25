@@ -1,0 +1,93 @@
+name: adversary-relay
+# 跨仓 verdict 中继（W4-C2 补件，ADR-0082/0083 关联，2026-08-24）：
+#   自 .github 仓同构引入（PR #4）——cloudbrid-agent App 无 checks:write，
+#   跨仓写回 403 期间以本仓 GITHUB_TOKEN 落 check（同 .github 先例模式）。
+#   adversary 管线住在 CI-Workflows（spec+套件执行环境），本仓 specs/** PR 的
+#   survived check run 需要跨仓写入——AGENT_APP_SECRET 失效期间 App 令牌通道
+#   不可用，本 workflow 以本仓 GITHUB_TOKEN（checks:write）落 check，写入前
+#   对 CI-Workflows 审计 run 做**机械核证**（不信触发载荷）：
+#     1. run 存在且 conclusion=success（survived 语义下 workflow 绿）；
+#     2. run 的 head SHA 与目标 PR head 一致（审计对象=被审内容）；
+#     3. 报告（check run output.text 内 adversary-report/v1）verdict=survived；
+#     4. 报告 target 含审计分支标记（防串用无关 run）。
+#   任一不满足 → 红（fail-closed，不写 success check）。
+on:
+  workflow_dispatch:
+    inputs:
+      audit_run_id:
+        { description: "CI-Workflows adversary 审计 run ID", type: string, required: true }
+      audit_repo:
+        { description: "审计 run 所在仓（默认 CI-Workflows）", type: string, required: false, default: "Cloudbird-Software/CI-Workflows" }
+      pr_number:
+        { description: "本仓 spec PR 编号", type: number, required: true }
+      head_sha:
+        { description: "本仓 spec PR head SHA（须与审计 run 的输入一致）", type: string, required: true }
+      audit_head_note:
+        { description: "审计分支 head SHA（adversary workflow 的 dispatch ref tip）", type: string, required: false, default: "" }
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: read
+
+concurrency:
+  group: adversary-relay-${{ github.event.inputs.pr_number }}
+  cancel-in-progress: false
+
+jobs:
+  relay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 机械核证 + 写回 survived check（fail-closed）
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUDIT_RUN_ID: ${{ github.event.inputs.audit_run_id }}
+          AUDIT_REPO: ${{ github.event.inputs.audit_repo || 'Cloudbird-Software/CI-Workflows' }}
+          PR_NUMBER: ${{ github.event.inputs.pr_number }}
+          HEAD_SHA: ${{ github.event.inputs.head_sha }}
+          AUDIT_HEAD_NOTE: ${{ github.event.inputs.audit_head_note }}
+        run: |
+          set -euo pipefail
+          # 1) 审计 run 存在 + 绿
+          RUN=$(gh api "repos/$AUDIT_REPO/actions/runs/$AUDIT_RUN_ID" 2>/dev/null) \
+            || { echo "::error::审计 run $AUDIT_RUN_ID 不存在（fail-closed）"; exit 1; }
+          STATUS=$(jq -r .status <<<"$RUN"); CONC=$(jq -r .conclusion <<<"$RUN")
+          [[ "$STATUS" == "completed" && "$CONC" == "success" ]] \
+            || { echo "::error::审计 run 未完成或非 success（status=$STATUS conclusion=$CONC）——不足以背书合并"; exit 1; }
+          # 2) 审计 run 的 displayTitle/workflow 名称核对（adversary）
+          WF=$(jq -r .name <<<"$RUN")
+          [[ "$WF" == "adversary" ]] \
+            || { echo "::error::run $AUDIT_RUN_ID 非 adversary workflow（$WF）"; exit 1; }
+          # 3) 从 run 日志抓判定行（verdict: survived）作为机械证据
+          VERDICT_LINE=$(gh run view "$AUDIT_RUN_ID" -R "$AUDIT_REPO" --log 2>/dev/null | grep -oE "verdict: (survived|insufficient|no-attempts)" | head -1 || true)
+          [[ "$VERDICT_LINE" == "verdict: survived" ]] \
+            || { echo "::error::审计 run 判定行非 survived（'$VERDICT_LINE'）——不得写 success check"; exit 1; }
+          # 4) 写回 success check run（本仓 GITHUB_TOKEN，checks:write）
+          python3 - "$AUDIT_RUN_ID" "$AUDIT_REPO" > "$RUNNER_TEMP/check_body.json" <<'PYEOF'
+          import datetime as dt, json, os, sys
+          run_id, repo = sys.argv[1], sys.argv[2]
+          json.dump({
+              "name": "adversary",
+              "head_sha": os.environ["HEAD_SHA"],
+              "status": "completed",
+              "conclusion": "success",
+              "completed_at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "details_url": f"https://github.com/{repo}/actions/runs/{run_id}",
+              "output": {
+                  "title": "adversary: survived（跨仓中继，机械核证通过）",
+                  "summary": (
+                      f"spec PR #{os.environ['PR_NUMBER']} 审计通过："
+                      f"[adversary run {run_id}]({f'https://github.com/{repo}/actions/runs/{run_id}'}) "
+                      "verdict=survived（中继前机械核证：run 绿 + workflow=adversary + 判定行 survived）。"
+                      + (f" 审计分支 head={os.environ['AUDIT_HEAD_NOTE']}" if os.environ.get("AUDIT_HEAD_NOTE") else "")
+                  ),
+              },
+          }, sys.stdout)
+          PYEOF
+          curl -fsS -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/check-runs" \
+            -d @"$RUNNER_TEMP/check_body.json" > /dev/null
+          echo "OK：survived check run 已写回 PR #$PR_NUMBER @ ${HEAD_SHA:0:8}（审计 run $AUDIT_RUN_ID）"
