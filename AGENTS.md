@@ -23,6 +23,6 @@
 
 ## 索引（用到再读，不要全读）
 
-- 本地命令：`make setup` 安装 / `make check` 提交前必跑（lint+arch+test）/ `make test <文件>` 单测；建模块/动边界 → [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- 本地命令：`make setup`（npm ci + uv sync）/ `make check` 提交前必跑（ruff+arch+pytest+关卡自测）/ `make gates-pr` CI 等价复现；单元测试放 `tests/pytest/<波次>/`（make test），机器红复现依赖 `tests/card/**` TS 驱动（g050 口径，只认断言红）；建模块/动边界 → [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - 选语言/选库 → [.github 仓 governance/policy/languages.yaml](https://github.com/Cloudbird-Software/.github/blob/main/governance/policy/languages.yaml)；测试政策 → [testing.yaml](https://github.com/Cloudbird-Software/.github/blob/main/governance/policy/testing.yaml)
 - 治理措施总清单 → [.github 仓 governance/GOVERNANCE.yaml](https://github.com/Cloudbird-Software/.github/blob/main/governance/GOVERNANCE.yaml)；模块内工作 → 该模块目录下的 AGENTS.md

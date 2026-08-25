@@ -74,8 +74,11 @@ thresholds:
 # 而签名正则/命令含空格，故全部用标量表示）。
 g050-fail-before:
   # 红复现运行器：g050 在测试 commit 的 worktree 上复跑新测试（worktree 置于
-  # reports/ 下——git/prettier/eslint 均忽略，且 node 模块解析向上命中仓根 node_modules）
-  runner-cmd: "npx vitest run"
+  # reports/ 下——git/prettier/eslint 均忽略，且 node 模块解析向上命中仓根 node_modules）。
+  # Python 仓口径（卡 #6）：tools/g050-runner.sh 只复跑 worktree 中已存在的
+  # tests/card/**/*.test.ts TS 驱动（quality 关卡 job 无 python 包环境，.py 测试不
+  # 参与机器红复现；TS 驱动经 child_process 驱动真实 Python 实现，红=断言失败）。
+  runner-cmd: "bash tools/g050-runner.sh"
   # 验收测试路径前缀（test-author commit 判定：改动文件全部落在该前缀内）
   test-paths: "tests/"
   # 有效红签名（ERE；命中且无 collection 签名才算"断言失败"的红）
@@ -133,7 +136,7 @@ g030-nav:
   # 4) 文档-符号验真：这些 .md 反引号引用的符号必须存在于代码/make/npm 符号宇宙
   doc-paths: "README.md|AGENTS.md|docs"
   # 非代码专名白名单（"|"连接；仅限确实不是代码符号的词）
-  doc-symbol-ignore: ""
+  doc-symbol-ignore: "INV-1|INV-5|INV-6"
   # 5) 词表 lint：版本化 glossary；文档散文中的缩写必须先入表
   glossary-file: "quality/glossary.yaml"
 g040-complexity:
