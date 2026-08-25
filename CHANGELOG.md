@@ -14,3 +14,5 @@
   2 次 / 失败留痕跳过 / 批次不阻塞；spec AC-3 / AC-16 / BUDGET-2 / INV-4）。
 - W1-C2：对标组管理与四维筛选——src/viral_radar/app/benchmark.py（5-20 规模收敛
   执法、垂类关键词/点赞/转发/爆款频次四维筛选、确定序可复核；spec AC-2 / BEH-2）。
+- W1-C1：账号录入与平台判定——src/viral_radar/adapters/registry.py（链接域名边界/
+  ID 双口径平台判定、三通道归位、基础信息拉取、判定结果持久化可查；spec AC-1 / BEH-1）。
