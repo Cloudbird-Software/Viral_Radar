@@ -31,6 +31,10 @@ src = ["src", "tests"]
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "W"]
 
+[tool.ruff.lint.per-file-ignores]
+# 队列容错面：处理步骤失败类型未知，必须统一折叠（BUDGET-2 语义；不用行内抑制标记）
+"src/viral_radar/app/queue.py" = ["BLE001"]
+
 [tool.ruff.format]
 quote-style = "double"
 

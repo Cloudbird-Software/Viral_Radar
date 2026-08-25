@@ -63,7 +63,7 @@ class TaskQueue:
                 handler(task)
                 task.state = TaskState.DONE
                 return
-            except Exception as exc:  # noqa: BLE001 —— 采集/处理失败面未知，统一折叠
+            except Exception as exc:  # 失败面未知统一折叠（BLE001 经 pyproject 豁免）
                 task.attempts += 1
                 task.error = str(exc)
                 if task.attempts > self.MAX_RETRIES:
