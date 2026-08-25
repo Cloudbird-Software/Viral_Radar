@@ -24,3 +24,5 @@
 - W1-C7：数据融合对齐——src/viral_radar/processing/unified/fusion.py（标题+ASR+OCR
   按时间轴/图片顺序融合为统一 JSON，产物过 W0-C2 schema；缺时间戳拒绝（INV-2）；
   spec AC-7 / BEH-8）。
+- W4-C1：小红书采集适配器——src/viral_radar/adapters/xhs（短视频流+图文图片集、
+  封面/内页图片顺序属性、文末 Hashtag；spec AC-4 小红书面）。
