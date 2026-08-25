@@ -7,6 +7,7 @@ requires-python = ">=3.11"
 license = { text = "MIT" }
 dependencies = [
   "litellm>=1.57",
+  "rapidocr-onnxruntime>=1.4,<2",
 ]
 
 [dependency-groups]

@@ -31,3 +31,5 @@
 - W0-C4：LLM 网关统一路由与版本化 Prompt 资产——src/viral_radar/app/llm 与
   src/viral_radar/analysis/assets（供应商配置化热切换 / 意图标签集可枚举 / 拆解模板
   版本化落仓；spec AC-17 / INV-5 / INV-6 / IFACE-2 / IFACE-3）。
+- W1-C6：OCR 画面识别——src/viral_radar/processing/ocr（RapidOCR 惰性引擎、
+  花字/字幕/内嵌三类文本、帧/图片顺序属性；spec AC-6 / BEH-7）。
