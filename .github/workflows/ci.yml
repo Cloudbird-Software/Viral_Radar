@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   hygiene:
-    uses: Cloudbird-Software/CI-Workflows/.github/workflows/hygiene.yml@61191f87c537f6e887695517121c6e530a838261 # v1
+    uses: Cloudbird-Software/CI-Workflows/.github/workflows/hygiene.yml@d1676b0627aed5eaed7a75bce527249cb12adad6 # v1
 
   deps-audit:
     # push 面依赖审计（ADR-0021，红队 #11-C）：dependency-review 只支持 PR 事件（比对
@@ -39,9 +39,9 @@ jobs:
           npm audit --package-lock-only --audit-level=high
 
   check:
-    uses: Cloudbird-Software/CI-Workflows/.github/workflows/check.yml@61191f87c537f6e887695517121c6e530a838261 # v1
+    uses: Cloudbird-Software/CI-Workflows/.github/workflows/check.yml@d1676b0627aed5eaed7a75bce527249cb12adad6 # v1
     with:
-      ciw-ref: 61191f87c537f6e887695517121c6e530a838261
+      ciw-ref: d1676b0627aed5eaed7a75bce527249cb12adad6
       runtime: node
       node-version: "24"
 
@@ -50,9 +50,9 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    uses: Cloudbird-Software/CI-Workflows/.github/workflows/dep-review.yml@61191f87c537f6e887695517121c6e530a838261 # v1
+    uses: Cloudbird-Software/CI-Workflows/.github/workflows/dep-review.yml@d1676b0627aed5eaed7a75bce527249cb12adad6 # v1
     with:
-      ciw-ref: 61191f87c537f6e887695517121c6e530a838261
+      ciw-ref: d1676b0627aed5eaed7a75bce527249cb12adad6
 
   adr-required:
     # C1 脚手架面（ADR-0021，GOVERNANCE C1 scope）：供应链入口文件变更须引用 ADR。
@@ -116,18 +116,18 @@ jobs:
     # BOOTSTRAP 钉扎：uses 与 ciw-ref 均指向 CI-Workflows PR #18 分支提交（两处一致，
     # 被调用侧无法自取自身 ref）；其 squash 合入并走 v1.X.Y 发布四步流程后，两处同改
     # merge SHA（勿用可变 @main）。
-    uses: Cloudbird-Software/CI-Workflows/.github/workflows/contract.yml@61191f87c537f6e887695517121c6e530a838261 # v1
+    uses: Cloudbird-Software/CI-Workflows/.github/workflows/contract.yml@d1676b0627aed5eaed7a75bce527249cb12adad6 # v1
     with:
-      ciw-ref: 61191f87c537f6e887695517121c6e530a838261
+      ciw-ref: d1676b0627aed5eaed7a75bce527249cb12adad6
 
   suppression-budget:
     # P2-2 抑制标记预算门（ADR-0036 / .github #87）：净增 ≤3/PR + 合入树总量棘轮
     # + ADR 逃生门。独立 reusable（v1.5.1 内嵌 check.yml 实测触发平台 action 解析
     # 故障，v1.5.3 起独立文件——ADR-0036 修订）。非 PR 事件 n/a-success（无需
     # EXPECTED_SKIP 登记）。
-    uses: Cloudbird-Software/CI-Workflows/.github/workflows/suppression-gate.yml@61191f87c537f6e887695517121c6e530a838261
+    uses: Cloudbird-Software/CI-Workflows/.github/workflows/suppression-gate.yml@d1676b0627aed5eaed7a75bce527249cb12adad6
     with:
-      detector-ref: 61191f87c537f6e887695517121c6e530a838261
+      detector-ref: d1676b0627aed5eaed7a75bce527249cb12adad6
 
   quality-gates:
     # W2-C2（.github#215，ADR-0061 决策 5 / AC-4）：CI 与本地 make gates-pr 同一编排器
