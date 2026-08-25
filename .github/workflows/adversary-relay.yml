@@ -15,15 +15,33 @@ on:
   workflow_dispatch:
     inputs:
       audit_run_id:
-        { description: "CI-Workflows adversary 审计 run ID", type: string, required: true }
+        {
+          description: "CI-Workflows adversary 审计 run ID",
+          type: string,
+          required: true,
+        }
       audit_repo:
-        { description: "审计 run 所在仓（默认 CI-Workflows）", type: string, required: false, default: "Cloudbird-Software/CI-Workflows" }
+        {
+          description: "审计 run 所在仓（默认 CI-Workflows）",
+          type: string,
+          required: false,
+          default: "Cloudbird-Software/CI-Workflows",
+        }
       pr_number:
         { description: "本仓 spec PR 编号", type: number, required: true }
       head_sha:
-        { description: "本仓 spec PR head SHA（须与审计 run 的输入一致）", type: string, required: true }
+        {
+          description: "本仓 spec PR head SHA（须与审计 run 的输入一致）",
+          type: string,
+          required: true,
+        }
       audit_head_note:
-        { description: "审计分支 head SHA（adversary workflow 的 dispatch ref tip）", type: string, required: false, default: "" }
+        {
+          description: "审计分支 head SHA（adversary workflow 的 dispatch ref tip）",
+          type: string,
+          required: false,
+          default: "",
+        }
 
 permissions:
   contents: read
