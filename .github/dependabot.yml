@@ -7,6 +7,17 @@ updates:
       actions:
         patterns: ["*"]
         cooldown-days: 7
+  # Python 业务依赖（SC-3 依赖周更）——litellm/rapidocr-onnxruntime/faster-whisper
+  # 等多模态重依赖此前无任何自动更新/漏洞检测覆盖（治理对齐补面，ADR-0091）
+  - package-ecosystem: pip
+    directory: "/"
+    schedule: { interval: weekly }
+    open-pull-requests-limit: 5
+    groups:
+      minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+        cooldown-days: 7
   - package-ecosystem: npm
     directory: "/"
     schedule: { interval: weekly }
