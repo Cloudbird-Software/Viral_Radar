@@ -49,3 +49,5 @@
   拆解→总结端到端 fixture 驱动 + 队列容错；W1+W2 集成收口）。
 - W3-C1：单账号深度报告——src/viral_radar/analysis/report/single.py（概览/视频级
   拆解/结构化大纲/逻辑总结四节齐备；spec AC-11 单账号面）。
+- W3-C1：单账号深度报告——src/viral_radar/analysis/report/single.py（概览/视频级
+  拆解/结构化大纲/逻辑总结四节齐备；spec AC-11 单账号面）。
