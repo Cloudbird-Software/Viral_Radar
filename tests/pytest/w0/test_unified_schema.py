@@ -33,6 +33,12 @@ class TestUnifiedSchema:
         schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
         assert schema["schema_version"] == 1
 
+    def test_optional_field_null_allowed(self):
+        """真实执行回归：平台数据可选属性（followers）常显式缺失/为 null。"""
+        doc = _doc()
+        doc["author"]["followers"] = None
+        assert UnifiedValidator().validate(doc) == []
+
     def test_valid_document_passes(self):
         assert UnifiedValidator().validate(_doc()) == []
 
