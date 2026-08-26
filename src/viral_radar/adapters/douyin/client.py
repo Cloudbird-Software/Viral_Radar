@@ -46,11 +46,18 @@ class DouyinAdapter:
         return datetime.fromisoformat(str(published).replace("Z", "+00:00")) >= cutoff
 
     def _normalize(self, entry: dict) -> dict:
-        return {
-            "content_id": str(entry.get("content_id") or entry.get("aweme_id") or ""),
-            "url": entry.get("video_url") or entry.get("url") or "",
-            "published_at": entry.get("published_at") or "",
-            "likes": int(entry.get("likes") or 0),
-            "shares": int(entry.get("shares") or 0),
-            "top_comments": [str(c) for c in (entry.get("top_comments") or [])][:10],
-        }
+        # 标准化六字段覆盖同名原始键；未知扩展字段透传（fixture 内嵌
+        # asr_segments/ocr_items/title 等下游提取素材经此进入处理链）。
+        base = dict(entry)
+        base.pop("video_url", None)
+        base.update(
+            {
+                "content_id": str(entry.get("content_id") or entry.get("aweme_id") or ""),
+                "url": entry.get("video_url") or entry.get("url") or "",
+                "published_at": entry.get("published_at") or "",
+                "likes": int(entry.get("likes") or 0),
+                "shares": int(entry.get("shares") or 0),
+                "top_comments": [str(c) for c in (entry.get("top_comments") or [])][:10],
+            }
+        )
+        return base

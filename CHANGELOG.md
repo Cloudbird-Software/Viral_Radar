@@ -45,3 +45,5 @@
   固定结构套路三要素机械派生；spec AC-10 / BEH-11）。
 - W2-C2：抖音平台差异化分析——src/viral_radar/analysis/platforms/douyin.py（节奏/
   BGM卡点/黄金3秒三产物独立、平台面互不可替换；spec AC-9 / IFACE-4）。
+- W2-C4：抖音全链竖切冒烟收口——src/viral_radar/app/pipeline.py（录入→采集→融合→
+  拆解→总结端到端 fixture 驱动 + 队列容错；W1+W2 集成收口）。
