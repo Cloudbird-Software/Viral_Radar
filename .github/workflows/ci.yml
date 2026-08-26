@@ -61,7 +61,7 @@ jobs:
 
   adr-required:
     # C1 脚手架面（ADR-0021，GOVERNANCE C1 scope）：供应链入口文件变更须引用 ADR。
-    # 存在性校验读公开仓 agent-registry/decisions（GITHUB_TOKEN 可读公开仓，fail-closed）。
+    # 存在性校验读公开仓 archive/adr（ADR-0085 家园单仓化，GITHUB_TOKEN 可读公开仓，fail-closed）。
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 5
