@@ -47,3 +47,5 @@
   BGM卡点/黄金3秒三产物独立、平台面互不可替换；spec AC-9 / IFACE-4）。
 - W2-C4：抖音全链竖切冒烟收口——src/viral_radar/app/pipeline.py（录入→采集→融合→
   拆解→总结端到端 fixture 驱动 + 队列容错；W1+W2 集成收口）。
+- W3-C1：单账号深度报告——src/viral_radar/analysis/report/single.py（概览/视频级
+  拆解/结构化大纲/逻辑总结四节齐备；spec AC-11 单账号面）。
