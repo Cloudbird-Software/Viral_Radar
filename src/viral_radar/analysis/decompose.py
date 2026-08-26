@@ -10,6 +10,7 @@ import json
 import re
 
 from viral_radar.analysis.assets import AnalysisAssets
+from viral_radar.analysis.json_scan import scan_balanced_json
 
 _TIME_RANGE = re.compile(r"^\d{1,2}:\d{2}(?:\.\d+)?-\d{1,2}:\d{2}(?:\.\d+)?$")
 
@@ -27,34 +28,20 @@ class DecomposeEngine:
         return [self._validate(item) for item in slices]
 
     def _parse(self, response: str) -> list[dict]:
-        """取第一个括号配平的完整 JSON 数组（LLM 输出前后常夹带自由文本）。"""
-        start = response.find("[")
-        if start == -1:
-            raise ValueError(f"拆解输出未含 JSON 数组（不可机器解析）：{response[:120]!r}")
-        depth = 0
-        in_string = False
-        end = None
-        for i in range(start, len(response)):
-            ch = response[i]
-            if in_string:
-                if ch == "\\":
-                    i += 1
-                elif ch == '"':
-                    in_string = False
-                continue
-            if ch == '"':
-                in_string = True
-            elif ch in "[{":
-                depth += 1
-            elif ch in "]}":
-                depth -= 1
-                if depth == 0:
-                    end = i
-                    break
-        if end is None:
-            raise ValueError("拆解输出 JSON 数组未闭合")
+        """取第一个括号配平的完整 JSON 数组（LLM 输出前后常夹带自由文本）。
+
+        括号配平扫描收敛至 analysis.json_scan（与 draft.py 双份复制合一）。
+        """
+        fragment = scan_balanced_json(
+            response,
+            opener="[",
+            opens="[{",
+            closes="]}",
+            absent_message=f"拆解输出未含 JSON 数组（不可机器解析）：{response[:120]!r}",
+            unclosed_message="拆解输出 JSON 数组未闭合",
+        )
         try:
-            parsed = json.loads(response[start : end + 1])
+            parsed = json.loads(fragment)
         except ValueError as exc:
             raise ValueError(f"拆解输出 JSON 解析失败：{exc}") from exc
         if not isinstance(parsed, list):
