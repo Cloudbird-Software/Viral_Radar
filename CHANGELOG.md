@@ -55,3 +55,5 @@
   开头占比等量化共性特征由拆解结果机械派生；spec AC-11 聚合面）。
 - W3-C3：拍摄 SOP 标准化输出——src/viral_radar/analysis/sop.py（必含元素清单/
   时长限制/分镜要求三类可执行条目；spec AC-12 / BEH-13）。
+- W3-C4：报告在线阅读与 PDF 导出——src/viral_radar/app/report_web.py（HTML 在线
+  阅读零依赖 + reportlab PDF 导出与在线文本同源、pypdf 测试抽取一致；spec AC-14）。
