@@ -7,21 +7,26 @@
 version: 2
 acronyms:
   AC: 验收准则（Acceptance Criteria，卡面 Given-When-Then 条款）
+  ACCEPT: 验收与 bug 修复角色指引文件（ROLE-ACCEPT.md，ADR-0095 按意图路由）
   ADR: 架构决策记录（Architecture Decision Record，archive 仓 adr/ 正本）
   AGENTS: agent 入口协议文件（AGENTS.md，宪法 §11 索引型约束）
   AGPL: GNU Affero 通用公共许可证（禁入依赖）
   ASR: 自动语音识别（Automatic Speech Recognition，须含时间戳——IR-0001）
   CAS: compare-and-swap 原子租约（arbiter 认领协议）
   CI: 持续集成（Continuous Integration）
+  CNB: 免费算力沙箱池（cnb-bridge 仓桥接的 CodeBuddy NPC，弱模型实现引擎）
   GPL: GNU 通用公共许可证（禁入依赖）
   IR: 意图请求（Intent Request，意图登记与派生卡的组织单位）
   LLM: 大语言模型（Large Language Model）
   OCR: 光学字符识别（Optical Character Recognition，花字/字幕/内嵌文案）
   PAT: 个人访问令牌（Personal Access Token）
+  PM: 项目经理（PM 优先范式 ADR-0085；实现卡片的 agent 担任的编排角色）
   PR: 拉取请求（Pull Request）
-  SHA: git 提交哈希（ Secure Hash Algorithm；action 钉版用完整 SHA）
+  ROLE: 角色指引文件（.github 仓 docs/agent/ROLE-*.md，ADR-0095 按意图选路）
   SDK: 软件开发工具包（Software Development Kit，业务代码禁止直连）
+  SHA: git 提交哈希（ Secure Hash Algorithm；action 钉版用完整 SHA）
   SOP: 标准作业程序（Standard Operating Procedure，拍摄标准输出）
+  SPEC: 规格文档角色指引文件（ROLE-SPEC.md；spec PR 流程）
   SSPL: Server Side Public License（禁入依赖）
   TODO: 待办标记（代码内占位注释）
   TS: 脚本语言 TypeScript（本仓仅限治理脚手架面）

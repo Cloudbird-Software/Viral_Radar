@@ -102,15 +102,15 @@ jobs:
             echo "::error::C1 脚手架面（.github/AGENTS.md/Makefile/docs/zizmor.yml）变更但 PR 未引用 ADR-NNNN（GOVERNANCE C1——供应链入口，ADR-0021）"
             exit 1
           fi
-          ADR_LISTING=$(gh api "repos/Cloudbird-Software/agent-registry/contents/decisions?per_page=100" --paginate --jq '.[].name' 2>/dev/null)
+          ADR_LISTING=$(gh api "repos/Cloudbird-Software/archive/contents/adr?per_page=100" --paginate --jq '.[].name' 2>/dev/null)
           if [[ -z "$ADR_LISTING" ]]; then
-            echo "::error::agent-registry/decisions 清单拉取失败（fail-closed）"; exit 1
+            echo "::error::archive/adr 清单拉取失败（fail-closed）"; exit 1
           fi
           MISSING=0
           for ref in $( { echo "$PR_TITLE"; echo "$PR_BODY"; } | grep -oE "$ADR_RE" | sort -u ); do
             num="${ref#ADR-}"
             grep -q "^ADR-${num}-" <<<"$ADR_LISTING" || {
-              echo "::error::引用的 ${ref} 在 agent-registry/decisions/ 无对应文件（幽灵 ADR）"; MISSING=1; }
+              echo "::error::引用的 ${ref} 在 archive/adr/ 无对应文件（幽灵 ADR；ADR-0085 家园单仓化）"; MISSING=1; }
           done
           exit $MISSING
 
