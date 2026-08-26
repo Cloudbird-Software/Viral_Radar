@@ -37,3 +37,5 @@
   time_range/script_text/intent 三字段、intent 枚举值域 fail-closed；spec AC-8 / IFACE-2）。
 - W2-C1：秒级结构化拆解引擎——src/viral_radar/analysis/decompose.py（时间轴切片、
   time_range/script_text/intent 三字段、intent 枚举值域 fail-closed；spec AC-8 / IFACE-2）。
+- W1-C5：ASR 音轨转写——src/viral_radar/processing/asr（faster-whisper 惰性引擎、
+  segment 级时间戳、无时间戳产物 fail-closed 拒绝；spec AC-5 / INV-2 / BEH-6）。

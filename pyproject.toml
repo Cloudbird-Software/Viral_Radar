@@ -8,6 +8,7 @@ license = { text = "MIT" }
 dependencies = [
   "litellm>=1.57",
   "rapidocr-onnxruntime>=1.4,<2",
+  "faster-whisper>=1.0,<2",
 ]
 
 [dependency-groups]
