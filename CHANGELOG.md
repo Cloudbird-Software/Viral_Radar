@@ -43,3 +43,5 @@
   平台数据 followers 等可选项常缺失；必填性仍由键存在性执法）。
 - W2-C3：账号爆款逻辑总结——src/viral_radar/analysis/summary.py（叙事风格/高频词汇/
   固定结构套路三要素机械派生；spec AC-10 / BEH-11）。
+- W2-C2：抖音平台差异化分析——src/viral_radar/analysis/platforms/douyin.py（节奏/
+  BGM卡点/黄金3秒三产物独立、平台面互不可替换；spec AC-9 / IFACE-4）。
