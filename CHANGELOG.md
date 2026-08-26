@@ -71,3 +71,6 @@
   主题输入 → 场景/口播/运镜三段草稿、特征引用可追溯；spec AC-13）。
 - fix(llm)：网关供应商连接参数（api_key/api_base）透传给 litellm（真实执行回归——
   mock 模式下不触发、真实 DashScope 调用时 401；INV-5 供应商热切换修复）。
+- fix(w4)：补齐卡 #27 遗漏的小红书分析面源码（xhs.py）+ W4 分析面与仿写
+  生成的独立 pytest 覆盖（PR #61 只带了 CHANGELOG 未带实现文件——api_chain_push
+  在级联过程中该文件丢失）。
