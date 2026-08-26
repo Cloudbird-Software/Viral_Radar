@@ -65,3 +65,5 @@
   时长限制/分镜要求三类可执行条目；spec AC-12 / BEH-13）。
 - W3-C4：报告在线阅读与 PDF 导出——src/viral_radar/app/report_web.py（HTML 在线
   阅读零依赖 + reportlab PDF 导出与在线文本同源、pypdf 测试抽取一致；spec AC-14）。
+- W4-C2：小红书差异化分析——src/viral_radar/analysis/platforms/xhs.py（封面吸引力/
+  种草转化路径/图文排版三产物独立互不可替换；spec AC-9 小红书面）。
