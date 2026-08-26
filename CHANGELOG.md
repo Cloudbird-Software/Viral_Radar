@@ -39,3 +39,5 @@
   time_range/script_text/intent 三字段、intent 枚举值域 fail-closed；spec AC-8 / IFACE-2）。
 - W1-C5：ASR 音轨转写——src/viral_radar/processing/asr（faster-whisper 惰性引擎、
   segment 级时间戳、无时间戳产物 fail-closed 拒绝；spec AC-5 / INV-2 / BEH-6）。
+- fix(schema)：统一数据模型校验器允许可选字段显式 null（真实执行回归——
+  平台数据 followers 等可选项常缺失；必填性仍由键存在性执法）。
