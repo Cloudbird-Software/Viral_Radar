@@ -65,3 +65,5 @@
   时长限制/分镜要求三类可执行条目；spec AC-12 / BEH-13）。
 - W3-C4：报告在线阅读与 PDF 导出——src/viral_radar/app/report_web.py（HTML 在线
   阅读零依赖 + reportlab PDF 导出与在线文本同源、pypdf 测试抽取一致；spec AC-14）。
+- W4-C4：视频号差异化分析——src/viral_radar/analysis/platforms/video_channel.py
+  （社交货币属性/情绪共鸣点两产物独立互不可替换；spec AC-9 视频号面）。
