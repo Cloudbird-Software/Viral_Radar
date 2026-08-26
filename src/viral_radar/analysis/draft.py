@@ -8,8 +8,6 @@ LLM 调用经注入 gateway；驱动/测试用 mock 供应商（响应 tag 携�
 
 import json
 
-from viral_radar.analysis.json_scan import scan_balanced_json
-
 
 class ScriptDraftGenerator:
     """三段结构脚本草稿生成器（输出与特征引用可机器复核）。"""
@@ -36,20 +34,33 @@ class ScriptDraftGenerator:
         return draft
 
     def _parse(self, response: str) -> dict:
-        """取第一个括号配平的完整 JSON 对象（LLM 输出前后常夹带自由文本）。
-
-        括号配平扫描收敛至 analysis.json_scan（与 decompose.py 双份复制合一）；
-        json.loads 失败在此保持原样上抛（历史语义：本调用点不做二次包装）。
-        """
-        fragment = scan_balanced_json(
-            response,
-            opener="{",
-            opens="{",
-            closes="}",
-            absent_message=f"仿写输出未含 JSON 对象：{response[:120]!r}",
-            unclosed_message="仿写输出 JSON 对象未闭合",
-        )
-        parsed = json.loads(fragment)
+        """取第一个括号配平的完整 JSON 对象（LLM 输出前后常夹带自由文本）。"""
+        start = response.find("{")
+        if start == -1:
+            raise ValueError(f"仿写输出未含 JSON 对象：{response[:120]!r}")
+        depth = 0
+        in_string = False
+        end = None
+        for i in range(start, len(response)):
+            ch = response[i]
+            if in_string:
+                if ch == "\\":
+                    i += 1
+                elif ch == '"':
+                    in_string = False
+                continue
+            if ch == '"':
+                in_string = True
+            elif ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    end = i
+                    break
+        if end is None:
+            raise ValueError("仿写输出 JSON 对象未闭合")
+        parsed = json.loads(response[start : end + 1])
         if not isinstance(parsed, dict):
             raise ValueError("仿写输出必须是 JSON 对象")
         missing = [k for k in ("scene", "script", "camera") if k not in parsed]

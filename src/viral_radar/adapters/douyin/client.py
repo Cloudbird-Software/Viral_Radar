@@ -7,19 +7,43 @@
 transport 契约：callable(page_cursor) -> {"items": [...], "next_cursor": str|None}；
 测试注入 mock 数据源（spec 测试要求：契约测试 mock 数据源产出标准化元数据）。
 未注入 transport 时 collect 直接拒绝（INV-3：无频控直连路径不存在）。
-采集骨架（分页/窗口/INV-3 门禁）由 adapters.base 公共基座提供（PR #39/#53 骨架
-与 #42/#43 同构——refactor 收敛为单一实现，归一逻辑仍在本文件）。
 """
 
-from viral_radar.adapters.base import PlatformAdapter
+from datetime import UTC, datetime, timedelta
+
+_MONTHS = 6
 
 
-class DouyinAdapter(PlatformAdapter):
+class DouyinAdapter:
     """抖音公开内容采集适配器。"""
 
-    _NO_TRANSPORT_MSG = (
-        "采集通道未注入合规传输层——直连采集被禁止（INV-3：仅公开数据 + 频控/代理默认启用）"
-    )
+    def __init__(self, transport=None) -> None:
+        self._transport = transport
+
+    def collect(self, account: str, months: int = _MONTHS) -> list[dict]:
+        if self._transport is None:
+            raise RuntimeError(
+                "采集通道未注入合规传输层——直连采集被禁止（INV-3：仅公开数据 + 频控/代理默认启用）"
+            )
+        cutoff = datetime.now(UTC) - timedelta(days=30 * months + 3)
+        items = []
+        cursor = None
+        while True:
+            page = self._transport(cursor)
+            raw = page.get("items") or []
+            for entry in raw:
+                if self._within_window(entry, cutoff):
+                    items.append(self._normalize(entry))
+            cursor = page.get("next_cursor")
+            if not cursor or not raw:
+                break
+        return items
+
+    def _within_window(self, entry: dict, cutoff: datetime) -> bool:
+        published = entry.get("published_at")
+        if not published:
+            return True  # 无时间戳不可判——保守保留（窗口过滤只对有时间的条目生效）
+        return datetime.fromisoformat(str(published).replace("Z", "+00:00")) >= cutoff
 
     def _normalize(self, entry: dict) -> dict:
         # 标准化六字段覆盖同名原始键；未知扩展字段透传（fixture 内嵌

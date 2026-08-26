@@ -11,6 +11,8 @@ dependencies = [
   "faster-whisper>=1.0,<2",
   "reportlab>=4.2,<5",
   "pypdf>=6,<7",
+  "reportlab>=4.2,<5",
+  "pypdf>=6,<7",
 ]
 
 [dependency-groups]
