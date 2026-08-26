@@ -39,6 +39,10 @@ class UnifiedValidator:
         return self._walk(doc, self._schema, "$")
 
     def _walk(self, node, schema: dict, path: str) -> list[str]:
+        # 可选字段允许显式 null（真实平台数据常缺如 followers 等可选属性；
+        # 必填性由父级 required 的"键存在性"检查执法，null 值不在此层拒绝）。
+        if node is None:
+            return []
         unknown = sorted(set(schema) - _SCHEMA_KEYWORDS)
         if unknown:
             return [f"{path}: schema 含不支持的关键字 {unknown}（fail-closed）"]
