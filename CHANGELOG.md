@@ -67,3 +67,5 @@
   阅读零依赖 + reportlab PDF 导出与在线文本同源、pypdf 测试抽取一致；spec AC-14）。
 - W4-C4：视频号差异化分析——src/viral_radar/analysis/platforms/video_channel.py
   （社交货币属性/情绪共鸣点两产物独立互不可替换；spec AC-9 视频号面）。
+- W4-C5：脚本草稿仿写生成——src/viral_radar/analysis/draft.py（调取爆款逻辑特征 +
+  主题输入 → 场景/口播/运镜三段草稿、特征引用可追溯；spec AC-13）。
