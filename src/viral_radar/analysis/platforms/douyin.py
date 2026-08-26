@@ -9,6 +9,10 @@ from viral_radar.analysis.assets import AnalysisAssets
 
 _PLATFORM = "Douyin"
 
+# BGM 卡点分档阈值（秒）：按 ASR 平均分段时长机械定档（密集 <2 ≤ 中速 <5 ≤ 慢速）。
+_BGM_DENSE_MAX_S = 2.0
+_BGM_MID_MAX_S = 5.0
+
 
 class DouyinAnalyst:
     """抖音差异化分析：三产物结构固定的 dict。"""
@@ -19,14 +23,14 @@ class DouyinAnalyst:
                 f"抖音分析面只接受 platform={_PLATFORM}，实得 {doc.get('platform')!r}（IFACE-4）"
             )
         entries = doc.get("timeline_data") or []
-        rhythm = self._rhythm(entries, decompose_slices)
+        rhythm = self._rhythm(entries)
         return {
             "rhythm": rhythm,
             "bgm": self._bgm(rhythm),
             "golden_three": self._golden_three(decompose_slices),
         }
 
-    def _rhythm(self, entries: list[dict], slices: list[dict]) -> dict:
+    def _rhythm(self, entries: list[dict]) -> dict:
         durations = [
             float(e["time_end"]) - float(e["time_start"])
             for e in entries
@@ -44,9 +48,9 @@ class DouyinAnalyst:
         if not beats:
             return "无 ASR 节拍数据，BGM 卡点建议不适用"
         mean = rhythm["avg_segment_s"]
-        if mean < 2.0:
+        if mean < _BGM_DENSE_MAX_S:
             return "密集切镜节奏：建议 BGM 卡点间隔 ≤2s，鼓点对齐每段 ASR 分界"
-        if mean < 5.0:
+        if mean < _BGM_MID_MAX_S:
             return "中速叙事节奏：建议 BGM 在段间停顿处换拍，卡点间隔 2-5s"
         return "慢叙事节奏：建议 BGM 低频推进，卡点与情绪反转段对齐"
 
