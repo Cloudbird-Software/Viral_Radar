@@ -41,3 +41,5 @@
   segment 级时间戳、无时间戳产物 fail-closed 拒绝；spec AC-5 / INV-2 / BEH-6）。
 - fix(schema)：统一数据模型校验器允许可选字段显式 null（真实执行回归——
   平台数据 followers 等可选项常缺失；必填性仍由键存在性执法）。
+- W2-C3：账号爆款逻辑总结——src/viral_radar/analysis/summary.py（叙事风格/高频词汇/
+  固定结构套路三要素机械派生；spec AC-10 / BEH-11）。
