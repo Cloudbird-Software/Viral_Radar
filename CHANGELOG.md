@@ -74,3 +74,8 @@
 - fix(w4)：补齐卡 #27 遗漏的小红书分析面源码（xhs.py）+ W4 分析面与仿写
   生成的独立 pytest 覆盖（PR #61 只带了 CHANGELOG 未带实现文件——api_chain_push
   在级联过程中该文件丢失）。
+- refactor：近一周 PR 技术债清扫（行为保持）——三平台采集适配器骨架收敛至
+  adapters/base.py（分页/回溯窗/INV-3 门禁单份实现，源头卡 #13/#26/#28 复制粘贴）；
+  LLM 输出括号配平扫描器收敛至 analysis/json_scan.py（decompose/draft 双份复制合一，
+  卡 #18/#30）；抖音分析面 BGM 阈值常量化与 _rhythm 死参数清理（卡 #19）；pyproject
+  去除重复依赖声明（reportlab/pypdf 各被列两次，#58/#62 连带）。

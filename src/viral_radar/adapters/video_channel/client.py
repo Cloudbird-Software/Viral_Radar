@@ -1,39 +1,14 @@
 """client.py —— 视频号公开内容采集通道（spec AC-4 视频号面 / BEH-4）。
 
 视频流 + 社交元数据（点赞/转发/收藏）。未注入 transport 拒绝采集（INV-3）。
+采集骨架（分页/窗口/INV-3 门禁）复用 adapters.base 公共基座，归一逻辑仍在本文件。
 """
 
-from datetime import UTC, datetime, timedelta
+from viral_radar.adapters.base import PlatformAdapter
 
 
-class VideoChannelAdapter:
+class VideoChannelAdapter(PlatformAdapter):
     """视频号采集适配器。"""
-
-    def __init__(self, transport=None) -> None:
-        self._transport = transport
-
-    def collect(self, account: str, months: int = 6) -> list[dict]:
-        if self._transport is None:
-            raise RuntimeError("采集通道未注入合规传输层——直连采集被禁止（INV-3）")
-        cutoff = datetime.now(UTC) - timedelta(days=30 * months + 3)
-        items = []
-        cursor = None
-        while True:
-            page = self._transport(cursor)
-            raw = page.get("items") or []
-            for entry in raw:
-                if self._within_window(entry, cutoff):
-                    items.append(self._normalize(entry))
-            cursor = page.get("next_cursor")
-            if not cursor or not raw:
-                break
-        return items
-
-    def _within_window(self, entry: dict, cutoff: datetime) -> bool:
-        published = entry.get("published_at")
-        if not published:
-            return True
-        return datetime.fromisoformat(str(published).replace("Z", "+00:00")) >= cutoff
 
     def _normalize(self, entry: dict) -> dict:
         base = dict(entry)
