@@ -59,3 +59,5 @@
   阅读零依赖 + reportlab PDF 导出与在线文本同源、pypdf 测试抽取一致；spec AC-14）。
 - W3-C1：单账号深度报告——src/viral_radar/analysis/report/single.py（概览/视频级
   拆解/结构化大纲/逻辑总结四节齐备；spec AC-11 单账号面）。
+- W3-C2：多账号聚合对比报告——src/viral_radar/analysis/report/aggregate.py（爆款
+  开头占比等量化共性特征由拆解结果机械派生；spec AC-11 聚合面）。
