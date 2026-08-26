@@ -42,9 +42,12 @@ class LlmGateway:
         import litellm  # 惰性导入：mock 路径零网络零外部依赖
 
         model = spec["model"]
+        # 供应商连接参数（api_key/api_base/temperature 等）与调用级参数合并——
+        # 配置里写什么就透传什么，业务代码不感知供应商差异（INV-5）。
+        provider_kwargs = {k: v for k, v in spec.items() if k not in ("kind", "model", "tag")}
         response = litellm.completion(
             model=model,
             messages=[{"role": "user", "content": prompt}],
-            **kwargs,
+            **{**provider_kwargs, **kwargs},
         )
         return response["choices"][0]["message"]["content"]

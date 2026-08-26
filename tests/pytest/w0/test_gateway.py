@@ -53,6 +53,29 @@ class TestGateway:
         assert gw.chat("hi", provider="mock").startswith("M")
         assert "litellm" not in sys.modules  # mock 路径不触网、不引依赖
 
+    def test_provider_connection_kwargs_passthrough(self, monkeypatch):
+        """供应商连接参数（api_key/api_base）必须透传给 litellm（真实执行回归捕获）。"""
+        import types
+
+        calls: dict = {}
+
+        def fake_completion(**kwargs):
+            calls.update(kwargs)
+            return {"choices": [{"message": {"content": "x"}}]}
+
+        monkeypatch.setitem(
+            sys.modules, "litellm", types.SimpleNamespace(completion=fake_completion)
+        )
+        gw = LlmGateway(
+            {"providers": {"p": {"kind": "litellm", "model": "m", "api_key": "K", "api_base": "B"}}}
+        )
+        out = gw.chat("hi", provider="p", temperature=0.1)
+        assert out == "x"
+        assert calls["model"] == "m"
+        assert calls["api_key"] == "K"
+        assert calls["api_base"] == "B"
+        assert calls["temperature"] == 0.1
+
     def test_config_file_roundtrip(self, tmp_path):
         path = tmp_path / "providers.json"
         path.write_text(json.dumps(self._mock_config(), ensure_ascii=False), encoding="utf-8")
