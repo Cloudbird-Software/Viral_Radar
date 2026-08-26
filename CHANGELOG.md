@@ -53,3 +53,5 @@
   拆解/结构化大纲/逻辑总结四节齐备；spec AC-11 单账号面）。
 - W3-C2：多账号聚合对比报告——src/viral_radar/analysis/report/aggregate.py（爆款
   开头占比等量化共性特征由拆解结果机械派生；spec AC-11 聚合面）。
+- W3-C3：拍摄 SOP 标准化输出——src/viral_radar/analysis/sop.py（必含元素清单/
+  时长限制/分镜要求三类可执行条目；spec AC-12 / BEH-13）。
